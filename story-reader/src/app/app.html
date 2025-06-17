@@ -1,6 +1,15 @@
-<div class="container">
-  <h1>Bedtime Story Reader</h1>
-  <input type="text" [(ngModel)]="prompt" placeholder="Describe your story" />
-  <button (click)="generate()">Send</button>
-  <audio *ngIf="audioUrl" controls [src]="audioUrl"></audio>
+<div class="container text-center mt-5">
+  <h1 class="mb-4">Bedtime Story Reader</h1>
+  <div class="input-group justify-content-center mb-3">
+    <input
+      type="text"
+      class="form-control w-auto"
+      [(ngModel)]="prompt"
+      placeholder="Describe your story"
+    />
+    <button class="btn btn-primary" (click)="generate()">Send</button>
+  </div>
+  <div *ngIf="audioUrl" class="mt-4">
+    <audio controls [src]="audioUrl" class="w-100"></audio>
+  </div>
 </div>
