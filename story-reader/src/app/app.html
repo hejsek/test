@@ -1,0 +1,6 @@
+<div class="container">
+  <h1>Bedtime Story Reader</h1>
+  <input type="text" [(ngModel)]="prompt" placeholder="Describe your story" />
+  <button (click)="generate()">Send</button>
+  <audio *ngIf="audioUrl" controls [src]="audioUrl"></audio>
+</div>
