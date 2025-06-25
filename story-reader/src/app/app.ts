@@ -26,6 +26,7 @@ export class App {
     this.audioUrl = undefined;
     try {
       const blob = await firstValueFrom(this.tts.synthesize(this.prompt));
+
       this.audioUrl = URL.createObjectURL(blob);
       setTimeout(() => {
         if (this.audioRef?.nativeElement) {
