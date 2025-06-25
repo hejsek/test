@@ -7,6 +7,11 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
+#story-container {
+  margin-top: 0;
+  transform: translateY(-20%);
+}
+
 #particles-js {
   position: fixed;
   width: 100%;
@@ -30,8 +35,32 @@
   top: 5%;
   left: 5%;
   width: 100px;
+  height: 100px;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNNTAgNWE0NSA0NSAwIDEgMCAwIDkwIDMwIDQ1IDAgMSAxIDAtOTB6IiBmaWxsPSIjZmZkMjdmIi8+PC9zdmc+Cg==");
+  background-size: cover;
+  border-radius: 50%;
+  overflow: hidden;
   pointer-events: none;
   z-index: -1;
+}
+
+#moon .shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #0b0b12;
+  transform: translateX(-100%);
+  animation: moonPhase 10s linear infinite;
+}
+
+@keyframes moonPhase {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(-50%);
+  }
 }
 
 input.form-control {

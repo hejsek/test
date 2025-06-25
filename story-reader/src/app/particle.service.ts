@@ -50,14 +50,14 @@ export class ParticleService {
             anim: { enable: true, speed: 1, size_min: 1, sync: false },
           },
           line_linked: { enable: false },
-          move: {
-            enable: true,
-            speed: 1,
-            direction: 'none',
-            random: false,
-            straight: true,
-            out_mode: 'out',
-          },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: 'none',
+              random: false,
+              straight: true,
+              out_mode: 'out',
+            },
         },
         retina_detect: true,
       });

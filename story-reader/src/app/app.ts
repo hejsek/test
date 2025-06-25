@@ -18,7 +18,6 @@ export class App implements AfterViewInit {
   audioUrl?: string;
   loading = false;
   @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
-  @ViewChild('moon', { static: true }) moonRef?: ElementRef<HTMLImageElement>;
 
   constructor(private tts: TtsService, private particles: ParticleService) {}
 
