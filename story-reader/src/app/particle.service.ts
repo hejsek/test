@@ -10,19 +10,19 @@ export class ParticleService {
     }
     particlesJS(id, {
       particles: {
-        number: { value: 50, density: { enable: true, value_area: 800 } },
-        color: { value: '#ffffff' },
+        number: { value: 60, density: { enable: true, value_area: 800 } },
+        color: { value: '#c0a6ff' },
         shape: { type: 'circle' },
-        opacity: { value: 0.5 },
+        opacity: { value: 0.7 },
         size: { value: 3, random: true },
         line_linked: {
-          enable: true,
+          enable: false,
           distance: 150,
-          color: '#ffffff',
+          color: '#c0a6ff',
           opacity: 0.4,
           width: 1,
         },
-        move: { enable: true, speed: 2 },
+        move: { enable: true, speed: 0.6 },
       },
       interactivity: {
         events: {

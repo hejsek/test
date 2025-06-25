@@ -1,8 +1,11 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Cormorant Garamond', serif;
+  background-color: #0b0b12;
+  color: #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
