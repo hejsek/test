@@ -24,12 +24,6 @@ export class App implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.particles.init('particles-js', 'fireflies-js');
-    document.addEventListener('mousemove', (e) => {
-      if (!this.moonRef) return;
-      const x = e.clientX - window.innerWidth / 2;
-      const y = e.clientY - window.innerHeight / 2;
-      this.moonRef.nativeElement.style.transform = `translate(${x * 0.02}px, ${y * 0.02}px)`;
-    });
   }
 
   async generate() {
