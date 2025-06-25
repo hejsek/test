@@ -1,9 +1,10 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TtsService } from './tts.service';
+import { ParticleService } from './particle.service';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +13,17 @@ import { TtsService } from './tts.service';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
+export class App implements AfterViewInit {
   prompt = '';
   audioUrl?: string;
   loading = false;
   @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
 
-  constructor(private tts: TtsService) {}
+  constructor(private tts: TtsService, private particles: ParticleService) {}
+
+  ngAfterViewInit(): void {
+    this.particles.init('particles-js');
+  }
 
   async generate() {
     if (!this.prompt) return;
