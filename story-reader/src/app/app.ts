@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { TtsService } from './tts.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class App {
     this.loading = true;
     this.audioUrl = undefined;
     try {
-      const blob = await this.tts.synthesize(this.prompt).toPromise();
+      const blob = await firstValueFrom(this.tts.synthesize(this.prompt));
+
       this.audioUrl = URL.createObjectURL(blob);
       setTimeout(() => {
         if (this.audioRef?.nativeElement) {
