@@ -33,16 +33,16 @@ export class ParticleService {
       retina_detect: true,
     });
 
-    // Firefly layer - gentle blinking fireflies
+    // Firefly layer - blinking fireflies with dynamic movement
     if (fireflyId) {
       particlesJS(fireflyId, {
         particles: {
           number: { value: 2, density: { enable: true, value_area: 800 } },
-          color: { value: '#ccff55' },
+          color: { value: '#ffd166' },
           shape: { type: 'circle' },
           opacity: {
             value: 1,
-            anim: { enable: true, speed: 0.2, opacity_min: 0, sync: false },
+            anim: { enable: true, speed: 0.5, opacity_min: 0, sync: false },
           },
           size: {
             value: 4,
@@ -50,17 +50,25 @@ export class ParticleService {
             anim: { enable: true, speed: 1, size_min: 1, sync: false },
           },
           line_linked: { enable: false },
-            move: {
-              enable: true,
-              speed: 2,
-              direction: 'none',
-              random: false,
-              straight: true,
-              out_mode: 'out',
-            },
+          move: {
+            enable: true,
+            speed: 3,
+            direction: 'none',
+            random: true,
+            straight: false,
+            out_mode: 'out',
+          },
         },
         retina_detect: true,
       });
+
+      // Periodically change speed to mimic erratic firefly movement
+      setInterval(() => {
+        const instance = (window as any).pJSDom?.find((p: any) => p?.pJS?.canvas?.el?.id === fireflyId)?.pJS;
+        if (instance) {
+          instance.particles.move.speed = 1 + Math.random() * 4; // between 1 and 5
+        }
+      }, 2000);
     }
   }
 }

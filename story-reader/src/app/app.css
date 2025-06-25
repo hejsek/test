@@ -50,16 +50,16 @@
   height: 100%;
   border-radius: 50%;
   background-color: #0b0b12;
-  transform: translateX(-100%);
-  animation: moonPhase 10s linear infinite;
+  transform: translateX(100%);
+  animation: moonPhase 30s linear infinite;
 }
 
 @keyframes moonPhase {
   0%, 100% {
-    transform: translateX(-100%);
+    transform: translateX(100%);
   }
   50% {
-    transform: translateX(-50%);
+    transform: translateX(50%);
   }
 }
 
