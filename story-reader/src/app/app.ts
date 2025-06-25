@@ -23,29 +23,6 @@ export class App implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.particles.init('particles-js', 'fireflies-js');
-
-    const star = document.getElementById('star');
-    if (star) {
-      let lastTime = performance.now();
-      let lastX = 0;
-      let lastY = 0;
-      document.addEventListener('pointermove', (e) => {
-        const now = performance.now();
-        const dx = e.clientX - lastX;
-        const dy = e.clientY - lastY;
-        const dt = now - lastTime || 1;
-        lastTime = now;
-        lastX = e.clientX;
-        lastY = e.clientY;
-        const speed = Math.sqrt(dx * dx + dy * dy) / dt;
-        const offset = Math.min(speed * 5, 30);
-        (star as HTMLElement).style.transform = `translate(${offset}px, ${-offset}px)`;
-        clearTimeout((star as any)._timer);
-        (star as any)._timer = setTimeout(() => {
-          (star as HTMLElement).style.transform = '';
-        }, 100);
-      });
-    }
   }
 
   async generate() {
