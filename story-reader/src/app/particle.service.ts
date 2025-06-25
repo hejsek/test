@@ -4,25 +4,21 @@ declare const particlesJS: any;
 
 @Injectable({ providedIn: 'root' })
 export class ParticleService {
-  init(id: string) {
+  init(starId: string, fireflyId?: string) {
     if (typeof particlesJS === 'undefined') {
       return;
     }
-    particlesJS(id, {
+
+    // Base star layer
+    particlesJS(starId, {
       particles: {
-        number: { value: 60, density: { enable: true, value_area: 800 } },
+        number: { value: 80, density: { enable: true, value_area: 800 } },
         color: { value: '#c0a6ff' },
         shape: { type: 'circle' },
         opacity: { value: 0.7 },
         size: { value: 3, random: true },
-        line_linked: {
-          enable: false,
-          distance: 150,
-          color: '#c0a6ff',
-          opacity: 0.4,
-          width: 1,
-        },
-        move: { enable: true, speed: 0.6 },
+        line_linked: { enable: false },
+        move: { enable: true, speed: 0.4 },
       },
       interactivity: {
         events: {
@@ -36,5 +32,35 @@ export class ParticleService {
       },
       retina_detect: true,
     });
+
+    // Chaotic firefly layer
+    if (fireflyId) {
+      particlesJS(fireflyId, {
+        particles: {
+          number: { value: 20, density: { enable: true, value_area: 800 } },
+          color: { value: '#ccff55' },
+          shape: { type: 'circle' },
+          opacity: {
+            value: 1,
+            anim: { enable: true, speed: 1, opacity_min: 0.2, sync: false },
+          },
+          size: {
+            value: 4,
+            random: true,
+            anim: { enable: true, speed: 4, size_min: 1, sync: false },
+          },
+          line_linked: { enable: false },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: 'none',
+            random: true,
+            straight: false,
+            out_mode: 'out',
+          },
+        },
+        retina_detect: true,
+      });
+    }
   }
 }

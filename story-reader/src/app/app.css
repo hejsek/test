@@ -13,7 +13,26 @@
   height: 100%;
   top: 0;
   left: 0;
+  z-index: -3;
+}
+
+#fireflies-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+#moon {
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  width: 150px;
+  pointer-events: none;
   z-index: -1;
+  transition: transform 0.2s ease-out;
 }
 
 input.form-control {
@@ -25,15 +44,23 @@ input.form-control {
 input.form-control:focus {
   background-color: #1b1b27;
   color: #fff;
+  box-shadow: 0 0 4px 2px rgba(255, 255, 100, 0.6);
+  outline: none;
 }
 
 .btn-primary {
   background-color: #3a3a4f;
   border: none;
+  box-shadow: none;
 }
 
 .btn-primary:hover {
   background-color: #4a4a6a;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 4px 2px rgba(255, 255, 100, 0.6);
+  outline: none;
 }
 
 h1 {
