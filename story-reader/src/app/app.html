@@ -6,7 +6,7 @@
       type="text"
       class="form-control w-auto"
       [(ngModel)]="prompt"
-      placeholder="Enter text"
+      placeholder="Enter your bedtime story prompt"
     />
     <button class="btn btn-primary" (click)="generate()" [disabled]="loading">
       <span
@@ -14,7 +14,7 @@
         class="spinner-border spinner-border-sm me-2"
         role="status"
       ></span>
-      Send
+      Read
     </button>
   </div>
   <div *ngIf="audioUrl" class="mt-4">
