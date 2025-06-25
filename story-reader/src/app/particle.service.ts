@@ -33,29 +33,29 @@ export class ParticleService {
       retina_detect: true,
     });
 
-    // Chaotic firefly layer
+    // Firefly layer - gentle blinking fireflies
     if (fireflyId) {
       particlesJS(fireflyId, {
         particles: {
-          number: { value: 20, density: { enable: true, value_area: 800 } },
+          number: { value: 2, density: { enable: true, value_area: 800 } },
           color: { value: '#ccff55' },
           shape: { type: 'circle' },
           opacity: {
             value: 1,
-            anim: { enable: true, speed: 1, opacity_min: 0.2, sync: false },
+            anim: { enable: true, speed: 0.2, opacity_min: 0, sync: false },
           },
           size: {
             value: 4,
             random: true,
-            anim: { enable: true, speed: 4, size_min: 1, sync: false },
+            anim: { enable: true, speed: 1, size_min: 1, sync: false },
           },
           line_linked: { enable: false },
           move: {
             enable: true,
-            speed: 2,
+            speed: 1,
             direction: 'none',
-            random: true,
-            straight: false,
+            random: false,
+            straight: true,
             out_mode: 'out',
           },
         },

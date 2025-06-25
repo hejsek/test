@@ -27,12 +27,11 @@
 
 #moon {
   position: fixed;
-  top: 10%;
-  right: 10%;
-  width: 150px;
+  top: 5%;
+  left: 5%;
+  width: 100px;
   pointer-events: none;
   z-index: -1;
-  transition: transform 0.2s ease-out;
 }
 
 input.form-control {
