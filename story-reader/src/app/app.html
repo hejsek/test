@@ -5,11 +5,18 @@
       type="text"
       class="form-control w-auto"
       [(ngModel)]="prompt"
-      placeholder="Describe your story"
+      placeholder="Enter text"
     />
-    <button class="btn btn-primary" (click)="generate()">Send</button>
+    <button class="btn btn-primary" (click)="generate()" [disabled]="loading">
+      <span
+        *ngIf="loading"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+      ></span>
+      Send
+    </button>
   </div>
   <div *ngIf="audioUrl" class="mt-4">
-    <audio controls [src]="audioUrl" class="w-100"></audio>
+    <audio #player controls [src]="audioUrl" class="w-100"></audio>
   </div>
 </div>

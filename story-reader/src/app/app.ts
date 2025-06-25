@@ -1,30 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { TtsService } from './tts.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   prompt = '';
   audioUrl?: string;
+  loading = false;
+  @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
+
+  constructor(private tts: TtsService) {}
 
   async generate() {
     if (!this.prompt) return;
+    this.loading = true;
+    this.audioUrl = undefined;
     try {
-      const response = await fetch('/api/story', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: this.prompt })
-      });
-      const blob = await response.blob();
+      const blob = await firstValueFrom(this.tts.synthesize(this.prompt));
       this.audioUrl = URL.createObjectURL(blob);
+      setTimeout(() => {
+        if (this.audioRef?.nativeElement) {
+          this.audioRef.nativeElement.load();
+          this.audioRef.nativeElement.play();
+        }
+      });
     } catch (err) {
-      console.error('Failed to fetch story', err);
+      console.error('Failed to fetch audio', err);
+    } finally {
+      this.loading = false;
     }
   }
 }
