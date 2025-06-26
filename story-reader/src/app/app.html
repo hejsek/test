@@ -20,6 +20,22 @@
     </button>
   </div>
   <div *ngIf="audioUrl" class="mt-4">
-    <audio #player controls [src]="audioUrl" class="w-100"></audio>
+    <div class="audio-container">
+      <audio
+        #player
+        controls
+        [src]="audioUrl"
+        class="w-100"
+        (timeupdate)="onTimeUpdate()"
+        (ended)="onEnded()"
+      ></audio>
+    </div>
+    <div class="text-display">
+      <span
+        *ngFor="let word of words; let i = index"
+        [class.highlight]="i === currentWordIndex"
+        >{{ word }} </span
+      >
+    </div>
   </div>
 </div>
