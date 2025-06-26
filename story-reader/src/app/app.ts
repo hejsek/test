@@ -6,6 +6,8 @@ import { firstValueFrom } from 'rxjs';
 import { TtsService } from './tts.service';
 import { ParticleService } from './particle.service';
 
+declare var Plyr: any;
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,11 +22,17 @@ export class App implements AfterViewInit {
   words: string[] = [];
   currentWordIndex = -1;
   @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
+  private player?: any;
 
   constructor(private tts: TtsService, private particles: ParticleService) {}
 
   ngAfterViewInit(): void {
     this.particles.init('particles-js', 'fireflies-js');
+    if (this.audioRef?.nativeElement && typeof Plyr !== 'undefined') {
+      this.player = new Plyr(this.audioRef.nativeElement, {
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume']
+      });
+    }
   }
 
   async generate() {
@@ -40,7 +48,15 @@ export class App implements AfterViewInit {
       setTimeout(() => {
         if (this.audioRef?.nativeElement) {
           this.audioRef.nativeElement.load();
-          this.audioRef.nativeElement.play();
+          if (this.player) {
+            this.player.source = {
+              type: 'audio',
+              sources: [{ src: this.audioUrl!, type: 'audio/mp3' }]
+            };
+            this.player.play();
+          } else {
+            this.audioRef.nativeElement.play();
+          }
           this.words = this.prompt.split(/\s+/);
         }
       });
@@ -52,8 +68,9 @@ export class App implements AfterViewInit {
   }
 
   onTimeUpdate() {
-    if (!this.audioRef?.nativeElement || !this.words.length) return;
-    const player = this.audioRef.nativeElement;
+    const elem = this.audioRef?.nativeElement;
+    const player = this.player ?? elem;
+    if (!player || !this.words.length) return;
     if (!player.duration) return;
     const index = Math.floor((player.currentTime / player.duration) * this.words.length);
     this.currentWordIndex = index;
