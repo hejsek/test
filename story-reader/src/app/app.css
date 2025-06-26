@@ -96,4 +96,22 @@ h1 {
   font-weight: 700;
 }
 
+.audio-container {
+  background-color: #1b1b27;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.text-display {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+}
+
+.highlight {
+  background-color: rgba(255, 255, 100, 0.4);
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
 

@@ -17,6 +17,8 @@ export class App implements AfterViewInit {
   prompt = '';
   audioUrl?: string;
   loading = false;
+  words: string[] = [];
+  currentWordIndex = -1;
   @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
 
   constructor(private tts: TtsService, private particles: ParticleService) {}
@@ -29,6 +31,8 @@ export class App implements AfterViewInit {
     if (!this.prompt) return;
     this.loading = true;
     this.audioUrl = undefined;
+    this.words = [];
+    this.currentWordIndex = -1;
     try {
       const blob = await firstValueFrom(this.tts.synthesize(this.prompt));
 
@@ -37,6 +41,7 @@ export class App implements AfterViewInit {
         if (this.audioRef?.nativeElement) {
           this.audioRef.nativeElement.load();
           this.audioRef.nativeElement.play();
+          this.words = this.prompt.split(/\s+/);
         }
       });
     } catch (err) {
@@ -44,5 +49,17 @@ export class App implements AfterViewInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  onTimeUpdate() {
+    if (!this.audioRef?.nativeElement || !this.words.length) return;
+    const player = this.audioRef.nativeElement;
+    if (!player.duration) return;
+    const index = Math.floor((player.currentTime / player.duration) * this.words.length);
+    this.currentWordIndex = index;
+  }
+
+  onEnded() {
+    this.currentWordIndex = -1;
   }
 }
