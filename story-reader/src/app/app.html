@@ -29,17 +29,12 @@
   <button *ngIf="story" class="btn btn-secondary mt-3" (click)="playStory()" [disabled]="loading">Play Audio</button>
 
   <div *ngIf="audioUrl" class="mt-4">
-    <div class="audio-container">
-      <audio
-        #player
-        id="audio-player"
-        controls
-        [src]="audioUrl"
-        class="w-100"
-        (timeupdate)="onTimeUpdate()"
-        (ended)="onEnded()"
-      ></audio>
-    </div>
+    <audio-player
+      #player
+      [src]="audioUrl"
+      (timeUpdate)="onTimeUpdate($event)"
+      (ended)="onEnded()"
+    ></audio-player>
   </div>
 </div>
 

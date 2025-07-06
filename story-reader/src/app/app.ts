@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -6,13 +6,13 @@ import { firstValueFrom } from 'rxjs';
 import { TtsService } from './tts.service';
 import { ParticleService } from './particle.service';
 import { StoryService } from './story.service';
+import { AudioPlayer } from './audio-player';
 
-declare var Plyr: any;
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, AudioPlayer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -24,8 +24,7 @@ export class App implements AfterViewInit {
   displayedStory = '';
   words: string[] = [];
   currentWordIndex = -1;
-  @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
-  private player?: any;
+  @ViewChild('player') playerComp?: AudioPlayer;
   private animationInterval?: any;
 
   constructor(
@@ -36,11 +35,6 @@ export class App implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.particles.init('particles-js', 'fireflies-js');
-    if (this.audioRef?.nativeElement && typeof Plyr !== 'undefined') {
-      this.player = new Plyr(this.audioRef.nativeElement, {
-        controls: ['play', 'progress', 'current-time', 'mute', 'volume']
-      });
-    }
   }
 
   async generate() {
@@ -79,21 +73,8 @@ export class App implements AfterViewInit {
       const blob = await firstValueFrom(this.tts.synthesize(this.story));
       this.audioUrl = URL.createObjectURL(blob);
       setTimeout(() => {
-        if (this.audioRef?.nativeElement) {
-          this.audioRef.nativeElement.load();
-          if (this.player) {
-            this.player.source = {
-              type: 'audio',
-              sources: [{ src: this.audioUrl!, type: 'audio/mp3' }]
-            };
-            this.player.currentTime = 0;
-            this.player.play();
-          } else {
-            this.audioRef.nativeElement.currentTime = 0;
-            this.audioRef.nativeElement.play();
-          }
-          this.currentWordIndex = 0;
-        }
+        this.playerComp?.loadAndPlay(this.audioUrl!);
+        this.currentWordIndex = 0;
       });
     } catch (err) {
       console.error('Failed to fetch audio', err);
@@ -102,12 +83,11 @@ export class App implements AfterViewInit {
     }
   }
 
-  onTimeUpdate() {
-    const elem = this.audioRef?.nativeElement;
-    const player = this.player ?? elem;
-    if (!player || !this.words.length) return;
-    if (!player.duration) return;
-    const index = Math.floor((player.currentTime / player.duration) * this.words.length);
+  onTimeUpdate(event: Event) {
+    const elem = event.target as HTMLAudioElement | null;
+    if (!elem || !this.words.length) return;
+    if (!elem.duration) return;
+    const index = Math.floor((elem.currentTime / elem.duration) * this.words.length);
     this.currentWordIndex = Math.min(index, this.words.length - 1);
   }
 
