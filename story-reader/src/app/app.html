@@ -32,7 +32,7 @@
     <audio-player
       #player
       [src]="audioUrl"
-      (timeUpdate)="onTimeUpdate($event)"
+      (timeUpdate)="onTimeUpdate()"
       (ended)="onEnded()"
     ></audio-player>
   </div>

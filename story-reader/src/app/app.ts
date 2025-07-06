@@ -83,11 +83,13 @@ export class App implements AfterViewInit {
     }
   }
 
-  onTimeUpdate(event: Event) {
-    const elem = event.target as HTMLAudioElement | null;
-    if (!elem || !this.words.length) return;
-    if (!elem.duration) return;
-    const index = Math.floor((elem.currentTime / elem.duration) * this.words.length);
+  onTimeUpdate() {
+    if (!this.playerComp || !this.words.length) return;
+    const duration = this.playerComp.duration;
+    if (!duration) return;
+    const index = Math.floor(
+      (this.playerComp.currentTime / duration) * this.words.length
+    );
     this.currentWordIndex = Math.min(index, this.words.length - 1);
   }
 
