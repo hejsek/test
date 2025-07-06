@@ -18,8 +18,13 @@ export class AudioPlayer implements AfterViewInit {
   private player?: any;
 
   ngAfterViewInit() {
-    if (this.audioRef?.nativeElement && typeof Plyr !== 'undefined') {
-      this.player = new Plyr(this.audioRef.nativeElement, {
+    const audioEl = this.audioRef?.nativeElement;
+    if (audioEl) {
+      audioEl.addEventListener('timeupdate', (ev) => this.timeUpdate.emit(ev));
+      audioEl.addEventListener('ended', (ev) => this.ended.emit(ev));
+    }
+    if (audioEl && typeof Plyr !== 'undefined') {
+      this.player = new Plyr(audioEl, {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume']
       });
       if (this.src) {
