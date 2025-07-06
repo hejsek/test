@@ -65,18 +65,9 @@ export class App implements AfterViewInit {
   }
 
   animateStory() {
-    const chars = this.story.split('');
-    let index = 0;
     clearInterval(this.animationInterval);
-    this.displayedStory = '';
-    this.animationInterval = setInterval(() => {
-      this.displayedStory += chars[index];
-      index++;
-      if (index >= chars.length) {
-        clearInterval(this.animationInterval);
-        this.words = this.story.split(/\s+/);
-      }
-    }, 30);
+    this.displayedStory = this.story;
+    this.words = this.story.split(/\s+/);
   }
 
   async playStory() {
@@ -96,10 +87,13 @@ export class App implements AfterViewInit {
               type: 'audio',
               sources: [{ src: this.audioUrl!, type: 'audio/mp3' }]
             };
+            this.player.currentTime = 0;
             this.player.play();
           } else {
+            this.audioRef.nativeElement.currentTime = 0;
             this.audioRef.nativeElement.play();
           }
+          this.currentWordIndex = 0;
         }
       });
     } catch (err) {
@@ -115,7 +109,7 @@ export class App implements AfterViewInit {
     if (!player || !this.words.length) return;
     if (!player.duration) return;
     const index = Math.floor((player.currentTime / player.duration) * this.words.length);
-    this.currentWordIndex = index;
+    this.currentWordIndex = Math.min(index, this.words.length - 1);
   }
 
   onEnded() {

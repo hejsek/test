@@ -11,6 +11,6 @@ body {
 }
 
 :root {
-  --plyr-color-main: var(--bs-primary);
-  --plyr-audio-controls-background: #1b1b27;
+  --plyr-color-main: #f6e27f;
+  --plyr-audio-controls-background: #0a1a3d;
 }
