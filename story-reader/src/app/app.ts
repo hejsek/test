@@ -74,7 +74,6 @@ export class App implements AfterViewInit {
     if (!this.story) return;
     this.loading = true;
     this.audioUrl = undefined;
-    this.words = [];
     this.currentWordIndex = -1;
     try {
       const blob = await firstValueFrom(this.tts.synthesize(this.story));
