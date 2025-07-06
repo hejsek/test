@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TtsService } from './tts.service';
 import { ParticleService } from './particle.service';
+import { StoryService } from './story.service';
 
 declare var Plyr: any;
 
@@ -19,12 +20,19 @@ export class App implements AfterViewInit {
   prompt = '';
   audioUrl?: string;
   loading = false;
+  story = '';
+  displayedStory = '';
   words: string[] = [];
   currentWordIndex = -1;
   @ViewChild('player') audioRef?: ElementRef<HTMLAudioElement>;
   private player?: any;
+  private animationInterval?: any;
 
-  constructor(private tts: TtsService, private particles: ParticleService) {}
+  constructor(
+    private tts: TtsService,
+    private storyService: StoryService,
+    private particles: ParticleService
+  ) {}
 
   ngAfterViewInit(): void {
     this.particles.init('particles-js', 'fireflies-js');
@@ -39,11 +47,46 @@ export class App implements AfterViewInit {
     if (!this.prompt) return;
     this.loading = true;
     this.audioUrl = undefined;
+    this.story = '';
+    this.displayedStory = '';
     this.words = [];
     this.currentWordIndex = -1;
     try {
-      const blob = await firstValueFrom(this.tts.synthesize(this.prompt));
+      const res = await firstValueFrom(
+        this.storyService.generateStory(this.prompt)
+      );
+      this.story = res.story;
+      this.animateStory();
+    } catch (err) {
+      console.error('Failed to generate story', err);
+    } finally {
+      this.loading = false;
+    }
+  }
 
+  animateStory() {
+    const chars = this.story.split('');
+    let index = 0;
+    clearInterval(this.animationInterval);
+    this.displayedStory = '';
+    this.animationInterval = setInterval(() => {
+      this.displayedStory += chars[index];
+      index++;
+      if (index >= chars.length) {
+        clearInterval(this.animationInterval);
+        this.words = this.story.split(/\s+/);
+      }
+    }, 30);
+  }
+
+  async playStory() {
+    if (!this.story) return;
+    this.loading = true;
+    this.audioUrl = undefined;
+    this.words = [];
+    this.currentWordIndex = -1;
+    try {
+      const blob = await firstValueFrom(this.tts.synthesize(this.story));
       this.audioUrl = URL.createObjectURL(blob);
       setTimeout(() => {
         if (this.audioRef?.nativeElement) {
@@ -57,7 +100,6 @@ export class App implements AfterViewInit {
           } else {
             this.audioRef.nativeElement.play();
           }
-          this.words = this.prompt.split(/\s+/);
         }
       });
     } catch (err) {
