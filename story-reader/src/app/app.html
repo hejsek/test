@@ -20,7 +20,12 @@
     </button>
   </div>
 
-  <div *ngIf="displayedStory" class="text-display animated-story">{{ displayedStory }}</div>
+  <div *ngIf="displayedStory" class="text-display animated-story">
+    <span
+      *ngFor="let word of words; let i = index"
+      [class.highlight]="i === currentWordIndex"
+    >{{ word }} </span>
+  </div>
   <button *ngIf="story" class="btn btn-secondary mt-3" (click)="playStory()" [disabled]="loading">Play Audio</button>
 
   <div *ngIf="audioUrl" class="mt-4">
@@ -34,13 +39,6 @@
         (timeupdate)="onTimeUpdate()"
         (ended)="onEnded()"
       ></audio>
-    </div>
-    <div class="text-display">
-      <span
-        *ngFor="let word of words; let i = index"
-        [class.highlight]="i === currentWordIndex"
-      >{{ word }} </span
-      >
     </div>
   </div>
 </div>
