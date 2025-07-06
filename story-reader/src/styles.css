@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Cormorant Garamond', serif;
-  background-color: #0b0b12;
+  background-color: #0b0b12 !important;
   color: #e0e0e0;
   display: flex;
   justify-content: center;
