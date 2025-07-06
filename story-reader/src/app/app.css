@@ -119,4 +119,14 @@ h1 {
   padding: 0 2px;
 }
 
+.animated-story {
+  white-space: pre-line;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 

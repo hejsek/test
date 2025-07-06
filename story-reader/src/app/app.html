@@ -8,7 +8,7 @@
       type="text"
       class="form-control w-auto"
       [(ngModel)]="prompt"
-      placeholder="Enter your bedtime story prompt"
+      placeholder="Enter theme for your bedtime story"
     />
     <button class="btn btn-primary" (click)="generate()" [disabled]="loading">
       <span
@@ -16,9 +16,13 @@
         class="spinner-border spinner-border-sm me-2"
         role="status"
       ></span>
-      Read
+      Generate
     </button>
   </div>
+
+  <div *ngIf="displayedStory" class="text-display animated-story">{{ displayedStory }}</div>
+  <button *ngIf="story" class="btn btn-secondary mt-3" (click)="playStory()" [disabled]="loading">Play Audio</button>
+
   <div *ngIf="audioUrl" class="mt-4">
     <div class="audio-container">
       <audio
@@ -35,8 +39,23 @@
       <span
         *ngFor="let word of words; let i = index"
         [class.highlight]="i === currentWordIndex"
-        >{{ word }} </span
+      >{{ word }} </span
       >
+    </div>
+  </div>
+  <button class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#cloneModal">Clone</button>
+</div>
+
+<!-- Clone Modal -->
+<div class="modal fade" id="cloneModal" tabindex="-1" aria-labelledby="cloneModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cloneModalLabel">Clone</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      </div>
     </div>
   </div>
 </div>
