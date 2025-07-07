@@ -19,17 +19,26 @@ export class AudioPlayer implements AfterViewInit {
 
   ngAfterViewInit() {
     const audioEl = this.audioRef?.nativeElement;
-    if (audioEl) {
-      audioEl.addEventListener('timeupdate', (ev) => this.timeUpdate.emit(ev));
-      audioEl.addEventListener('ended', (ev) => this.ended.emit(ev));
-    }
-    if (audioEl && typeof Plyr !== 'undefined') {
+    if (!audioEl) return;
+
+    if (typeof Plyr !== 'undefined') {
       this.player = new Plyr(audioEl, {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume']
       });
+      this.player.on('timeupdate', (ev: Event) => {
+        console.log('Audio timeupdate emitted', this.player.currentTime);
+        this.timeUpdate.emit(ev);
+      });
+      this.player.on('ended', (ev: Event) => this.ended.emit(ev));
       if (this.src) {
         this.setSource(this.src);
       }
+    } else {
+      audioEl.addEventListener('timeupdate', (ev) => {
+        console.log('Audio timeupdate emitted', audioEl.currentTime);
+        this.timeUpdate.emit(ev);
+      });
+      audioEl.addEventListener('ended', (ev) => this.ended.emit(ev));
     }
   }
 
